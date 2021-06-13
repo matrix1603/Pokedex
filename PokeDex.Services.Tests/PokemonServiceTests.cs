@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using PokeDex.FunTranslations.Provider;
 using PokeDex.PokeAPI.Provider;
 using PokeDex.PokeAPI.Provider.Messaging;
 using PokeDex.Services.Pokemons;
@@ -13,14 +14,15 @@ namespace PokeDex.Services.Tests
 	{
 		private IPokemonService _pokemonService;
 		private Mock<IPokeAPIProvider> _mockPokeAPIProvider;
-
-		[SetUp]
+        private Mock<IFunTranslationsProvider> _mockFunTranslationsProvider;
+        
+        [SetUp]
 		public void Setup()
 		{
 			_mockPokeAPIProvider = new Mock<IPokeAPIProvider>();
-			_pokemonService = new PokemonService(_mockPokeAPIProvider.Object);
+            _mockFunTranslationsProvider = new Mock<IFunTranslationsProvider>();
+            _pokemonService = new PokemonService(_mockPokeAPIProvider.Object, _mockFunTranslationsProvider.Object);
 		}
-
 
         [Test]
         public async Task GetPokemonAsync_WhenAValidPokemonNameIsPassed_PokemonObjectShouldNotBeNull()

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PokeDex.Services.Pokemons;
 
-namespace PokeDexWeb.API.Controllers
+namespace PokeDex.Web.API.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
@@ -30,5 +30,21 @@ namespace PokeDexWeb.API.Controllers
 
 			return Ok(result.Entity);
 		}
-    }
+
+        [HttpGet]
+        [Route("Translated/{pokemonName}")]
+        public async Task<IActionResult> Translated(string pokemonName)
+        {
+            //// TODO log request parameters
+
+            var result = await _pokemonService.TranslatedAsync(pokemonName);
+
+            if (result.HasError)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result.Entity);
+        }
+	}
 }

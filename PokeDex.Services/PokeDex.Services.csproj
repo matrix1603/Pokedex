@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PokeDex.PokeAPI.Provider\PokeDex.PokeAPI.Provider.csproj" />
+    <ProjectReference Include="..\PokeDex.Services.FunTranslations\PokeDex.FunTranslations.Provider.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PokeDex.Services.FunTranslations\PokeDex.FunTranslations.Provider.csproj" />
     <ProjectReference Include="..\PokeDex.Services\PokeDex.Services.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>PokeDex.FunTranslations.Provider</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PokeDex.Infrastructure\PokeDex.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

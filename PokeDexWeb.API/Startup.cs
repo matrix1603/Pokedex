@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PokeDex.FunTranslations.Provider;
 using PokeDex.Infrastructure.Http;
 using PokeDex.PokeAPI.Provider;
 using PokeDex.Services.Pokemons;
 
-namespace PokeDexWeb.API
+namespace PokeDex.Web.API
 {
     public class Startup
     {
@@ -22,8 +23,9 @@ namespace PokeDexWeb.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddSingleton<IHttpRestClient, HttpRestClient>();
-            services.AddSingleton<IPokeAPIProvider, PokeAPIProvider>();
+            services.AddScoped<IHttpRestClient, HttpRestClient>();
+            services.AddScoped<IPokeAPIProvider, PokeAPIProvider>();
+            services.AddScoped<IFunTranslationsProvider, FunTranslationsProvider>();
             services.AddScoped<IPokemonService, PokemonService>();
 
             services.AddControllers();
