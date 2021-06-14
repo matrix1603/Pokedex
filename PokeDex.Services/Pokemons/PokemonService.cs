@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using PokeDex.FunTranslations.Provider;
 using PokeDex.FunTranslations.Provider.Messaging;
+using PokeDex.Infrastructure.Cache;
 using PokeDex.PokeAPI.Provider;
 using PokeDex.PokeAPI.Provider.Messaging;
 using PokeDex.PokeAPI.Provider.Models;
@@ -16,11 +17,13 @@ namespace PokeDex.Services.Pokemons
 
         private readonly IPokeAPIProvider _pokeApiProvider;
         private readonly IFunTranslationsProvider _funTranslationsProvider;
+        private readonly ICacheStorage _cacheStorage;
 
-        public PokemonService(IPokeAPIProvider pokeApiProvider, IFunTranslationsProvider funTranslationsProvider)
+        public PokemonService(IPokeAPIProvider pokeApiProvider, IFunTranslationsProvider funTranslationsProvider, ICacheStorage cacheStorage)
         {
             _pokeApiProvider = pokeApiProvider;
             _funTranslationsProvider = funTranslationsProvider;
+            _cacheStorage = cacheStorage;
         }
 		public async Task<ServiceResult<GetPokemonDto>> GetPokemonAsync(string pokemonName)
 		{
@@ -34,9 +37,15 @@ namespace PokeDex.Services.Pokemons
 					return result;
 				}
 
-				var	pokemonResponse = await _pokeApiProvider.GetPokemonAsync(new GetPokemonRequest { Name = pokemonName });
+				var pokemonResponse = _cacheStorage.Retrieve<GetPokemonResponse>(pokemonName);
 
-				result.Entity = PokemonMapper.ConvertToGetPokemonDto(pokemonResponse);
+				if (pokemonResponse == null)
+				{
+					pokemonResponse = await _pokeApiProvider.GetPokemonAsync(new GetPokemonRequest { Name = pokemonName });
+					_cacheStorage.Store(pokemonName, 10, pokemonResponse);
+				}
+
+                result.Entity = PokemonMapper.ConvertToGetPokemonDto(pokemonResponse);
             }
 			catch (Exception e)
 			{
@@ -63,6 +72,16 @@ namespace PokeDex.Services.Pokemons
 
                 var translateRequest = BuildTranslateRequest(pokemonResult.Entity);
 
+                var translationCacheKey = $"{pokemonName}-{translateRequest.Translator}".ToLower();
+
+                var pokemonResponse = _cacheStorage.Retrieve<GetTranslationDto>(translationCacheKey);
+
+                if (pokemonResponse != null)
+                {
+	                result.Entity = pokemonResponse;
+	                return result;
+                }
+
                 var response = await _funTranslationsProvider.TranslateAsync(translateRequest);
 
                 if (response.Translation.Contents.Translation != translateRequest.Translator)
@@ -74,6 +93,8 @@ namespace PokeDex.Services.Pokemons
                 if (response.Translation.Success != null && response.Translation.Success.Total > 0)
                 {
                     result.Entity = TranslationMapper.ConvertToGetTranslationDto(response, pokemonResult.Entity);
+                    
+                    _cacheStorage.Store(translationCacheKey, 60, result.Entity);
 
                     return result;
                 }

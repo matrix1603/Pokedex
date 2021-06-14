@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PokeDex.FunTranslations.Provider;
+using PokeDex.Infrastructure.Cache;
 using PokeDex.Infrastructure.Http;
 using PokeDex.PokeAPI.Provider;
 using PokeDex.Services.Pokemons;
@@ -23,6 +24,9 @@ namespace PokeDex.Web.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+            services.AddMemoryCache();
+
+            services.AddScoped<ICacheStorage, MemoryCacheAdapter>();
             services.AddScoped<IHttpRestClient, HttpRestClient>();
             services.AddScoped<IPokeAPIProvider, PokeAPIProvider>();
             services.AddScoped<IFunTranslationsProvider, FunTranslationsProvider>();

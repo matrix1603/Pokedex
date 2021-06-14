@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using PokeDex.FunTranslations.Provider;
+using PokeDex.Infrastructure.Cache;
 using PokeDex.PokeAPI.Provider;
 using PokeDex.PokeAPI.Provider.Messaging;
 using PokeDex.Services.Pokemons;
@@ -15,13 +16,15 @@ namespace PokeDex.Services.Tests
 		private IPokemonService _pokemonService;
 		private Mock<IPokeAPIProvider> _mockPokeAPIProvider;
         private Mock<IFunTranslationsProvider> _mockFunTranslationsProvider;
+        private Mock<ICacheStorage> _mockICacheStorage;
         
         [SetUp]
 		public void Setup()
 		{
 			_mockPokeAPIProvider = new Mock<IPokeAPIProvider>();
             _mockFunTranslationsProvider = new Mock<IFunTranslationsProvider>();
-            _pokemonService = new PokemonService(_mockPokeAPIProvider.Object, _mockFunTranslationsProvider.Object);
+            _mockICacheStorage = new Mock<ICacheStorage>();
+            _pokemonService = new PokemonService(_mockPokeAPIProvider.Object, _mockFunTranslationsProvider.Object, _mockICacheStorage.Object);
 		}
 
         [Test]
