@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PokeDex.Services.Pokemons;
+using PokeDex.Services.Pokemons.DTO;
 
 namespace PokeDex.Web.API.Controllers
 {
@@ -17,6 +19,7 @@ namespace PokeDex.Web.API.Controllers
 
 		[HttpGet]
 		[Route("{pokemonName}")]
+		[ProducesResponseType(typeof(GetPokemonDto), StatusCodes.Status200OK)]
 		public async Task<IActionResult> Get(string pokemonName)
 		{
 			//// TODO log request parameters
@@ -33,7 +36,8 @@ namespace PokeDex.Web.API.Controllers
 
         [HttpGet]
         [Route("Translated/{pokemonName}")]
-        public async Task<IActionResult> Translated(string pokemonName)
+        [ProducesResponseType(typeof(GetTranslationDto), StatusCodes.Status200OK)]
+		public async Task<IActionResult> Translated(string pokemonName)
         {
             //// TODO log request parameters
 
