@@ -30,4 +30,10 @@ docker run -it --rm -p 8080:80 --name PokedoxApi pokedox-api
 ![image](https://user-images.githubusercontent.com/41857451/122128318-6bf47d80-ce2c-11eb-931f-a4f874a19102.png)
 
 
-## Endpoints
+## Further improvment for prodcution API
+- Use gRPC for better performance.
+- Further error handling and logging
+- Distributed cache
+- Unit Tests HTTP Client
+- Integration Testing
+- Documenting API
