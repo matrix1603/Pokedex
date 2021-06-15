@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace PokeDex.Infrastructure.Http
 {
@@ -36,9 +37,9 @@ namespace PokeDex.Infrastructure.Http
 								return JsonConvert.DeserializeObject<T>(stringResponse);
 
 							}
-							catch (Exception e)
+							catch (Exception ex)
 							{
-								Console.WriteLine(stringResponse);
+								Log.Error($"Unable to Deserialize string '{stringResponse}'", ex);
 								throw;
 							}
 						}
@@ -51,7 +52,7 @@ namespace PokeDex.Infrastructure.Http
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Log.Error($"SendRequestAsync failed", ex);
 				throw;
 			}
 		}
@@ -69,6 +70,8 @@ namespace PokeDex.Infrastructure.Http
 				Body = body,
 				Method = request.Method.Method
 			};
+
+			Log.Debug($"Log request", log);
 		}
 	}
 }

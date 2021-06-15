@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PokeDex.Services.Pokemons;
 using PokeDex.Services.Pokemons.DTO;
+using Serilog;
 
 namespace PokeDex.Web.API.Controllers
 {
@@ -22,6 +23,8 @@ namespace PokeDex.Web.API.Controllers
 		[ProducesResponseType(typeof(GetPokemonDto), StatusCodes.Status200OK)]
 		public async Task<IActionResult> Get(string pokemonName)
 		{
+			Log.Debug($"Get called, pokemonName: '{pokemonName}'");
+
 			//// TODO log request parameters
 
 			var result = await _pokemonService.GetPokemonAsync(pokemonName);
@@ -39,9 +42,9 @@ namespace PokeDex.Web.API.Controllers
         [ProducesResponseType(typeof(GetTranslationDto), StatusCodes.Status200OK)]
 		public async Task<IActionResult> Translated(string pokemonName)
         {
-            //// TODO log request parameters
+			Log.Debug($"Translated called, pokemonName: '{pokemonName}'");
 
-            var result = await _pokemonService.TranslatedAsync(pokemonName);
+			var result = await _pokemonService.TranslatedAsync(pokemonName);
 
             if (result.HasError)
             {

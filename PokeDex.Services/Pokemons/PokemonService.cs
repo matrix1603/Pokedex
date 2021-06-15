@@ -8,6 +8,7 @@ using PokeDex.PokeAPI.Provider.Messaging;
 using PokeDex.PokeAPI.Provider.Models;
 using PokeDex.Services.Pokemons.DTO;
 using PokeDex.Services.Pokemons.Mapper;
+using Serilog;
 
 namespace PokeDex.Services.Pokemons
 {
@@ -27,7 +28,9 @@ namespace PokeDex.Services.Pokemons
         }
 		public async Task<ServiceResult<GetPokemonDto>> GetPokemonAsync(string pokemonName)
 		{
-			var result = new ServiceResult<GetPokemonDto>();
+			Log.Debug($"Get GetPokemonAsync, pokemonName:'{pokemonName}'");
+
+            var result = new ServiceResult<GetPokemonDto>();
 
 			try
 			{
@@ -47,10 +50,11 @@ namespace PokeDex.Services.Pokemons
 
                 result.Entity = PokemonMapper.ConvertToGetPokemonDto(pokemonResponse);
             }
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				// log
-				result.Errors.Add($"Unable to find pokemon '{pokemonName}'");
+				Log.Error($"GetPokemonAsync failed , pokemonName: '{pokemonName}'", ex);
+
+                result.Errors.Add($"Unable to find pokemon '{pokemonName}'");
 			}
 
 			return result;
@@ -103,10 +107,11 @@ namespace PokeDex.Services.Pokemons
 
                 return result;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // log
-                result.Errors.Add("");
+	            Log.Error($"TranslatedAsync failed , pokemonName: '{pokemonName}'", ex);
+
+                result.Errors.Add($"Unable to translate, pokemonName : '{pokemonName}'");
             }
 
             return result;
