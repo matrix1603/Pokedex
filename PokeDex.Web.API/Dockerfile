@@ -7,10 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["PokeDex.Web.API/PokeDex.Web.API.csproj", "PokeDex.Web.API/"]
-COPY ["PokeDex.Services/PokeDex.Services.csproj", "PokeDex.Services/"]
-COPY ["PokeDex.PokeAPI.Provider/PokeDex.PokeAPI.Provider.csproj", "PokeDex.PokeAPI.Provider/"]
-COPY ["PokeDex.Infrastructure/PokeDex.Infrastructure.csproj", "PokeDex.Infrastructure/"]
-RUN dotnet restore "PokeDexWeb.API/PokeDex.Web.API.csproj"
+RUN dotnet restore "PokeDex.Web.API/PokeDex.Web.API.csproj"
 COPY . .
 WORKDIR "/src/PokeDex.Web.API"
 RUN dotnet build "PokeDex.Web.API.csproj" -c Release -o /app/build

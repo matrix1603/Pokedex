@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PokeDex.Services\PokeDex.Services.csproj" />
-    <ProjectReference Include="..\PokeDexWeb.API\PokeDex.Web.API.csproj" />
+    <ProjectReference Include="..\PokeDex.Web.API\PokeDex.Web.API.csproj" />
   </ItemGroup>
 
 </Project>
