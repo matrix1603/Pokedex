@@ -37,3 +37,4 @@ docker run -it --rm -p 8080:80 --name PokedoxApi pokedox-api
 - Unit Tests HTTP Client
 - Integration Testing
 - Documenting API
+- Security
