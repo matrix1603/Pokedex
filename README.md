@@ -31,7 +31,6 @@ docker run -it --rm -p 8080:80 --name PokedoxApi pokedox-api
 
 
 ## Further improvment for prodcution API
-- Use gRPC for better performance.
 - Further error handling and logging
 - Distributed cache
 - Unit Tests HTTP Client
